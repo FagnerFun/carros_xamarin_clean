@@ -1,0 +1,58 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- main
+
+pool:
+  name: Azure Pipelines
+  demands:
+  - MSBuild
+  - Xamarin.Android
+  - JDK
+
+variables:
+  BuildConfiguration: 'Release'
+
+steps:
+- task: NuGetToolInstaller@0
+  displayName: 'Use NuGet 4.4.1'
+  inputs:
+    versionSpec: 4.4.1
+
+- task: NuGetCommand@2
+  displayName: 'NuGet restore'
+  inputs:
+    restoreSolution: '$(Parameters.restorePkgSolution)'
+
+- task: XamarinAndroid@1
+  displayName: 'Build Xamarin.Android project'
+  inputs:
+    projectFile: src/carros_xamarin_clean/carros_xamarin_clean.Android/carros_xamarin_clean.Android.csproj
+    outputDirectory: '$(build.binariesdirectory)/$(BuildConfiguration)'
+    configuration: '$(BuildConfiguration)'
+
+- task: AndroidSigning@3
+  displayName: 'Signing and aligning APK file(s) $(build.binariesdirectory)/$(BuildConfiguration)/*.apk'
+  inputs:
+    apkFiles: '$(Parameters.appFiles)'
+    apksignerKeystoreFile: '2677b3af-f331-4e69-9f82-b435ef95f437'
+    apksignerKeystorePassword: '$(keystore_password)'
+    apksignerKeystoreAlias: carrosxamarin
+    apksignerKeyPassword: '$(keystore_password)'
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: carrosxamarin-android'
+  inputs:
+    PathtoPublish: '$(build.binariesdirectory)/$(BuildConfiguration)'
+    ArtifactName: 'carrosxamarin-android'
+  condition: succeededOrFailed()
+
+
+
+- script: |
+    echo Add other tasks to build, test, and deploy your project.
+    echo See https://aka.ms/yaml
+  displayName: 'Run a multi-line script'
