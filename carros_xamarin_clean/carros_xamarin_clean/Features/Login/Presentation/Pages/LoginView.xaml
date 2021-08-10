@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="carros_xamarin_clean.Features.Login.Presentation.Pages.LoginView"
+             xmlns:r="clr-namespace:carros_xamarin_clean.Core.Resources"
+             Title="{x:Static r:Resource.login}">
+    <ContentPage.Content>
+        <Frame VerticalOptions="Center" HorizontalOptions="FillAndExpand" 
+               Margin="25,0"
+               CornerRadius="5" HasShadow="True" >
+            <StackLayout>
+                <Entry Placeholder="{x:Static r:Resource.user}" Text="{Binding Username.Value, Mode=TwoWay}">
+                    <Entry.Triggers>
+                        <DataTrigger TargetType="Entry"
+							         Binding="{Binding Username.IsValid}"
+                                     Value="False">
+                            <Setter Property="PlaceholderColor" Value="{StaticResource RedColor}" />
+                        </DataTrigger>
+                    </Entry.Triggers>
+                </Entry>
+                <Label Text="{Binding Username.Errors, Converter={StaticResource ListToStringConverter}}"
+				       TextColor="{StaticResource RedColor}"
+                       FontSize="10"/>
+                <Entry IsPassword="True" Placeholder="{x:Static r:Resource.password}" Text="{Binding Password.Value, Mode=TwoWay}">
+                    <Entry.Triggers>
+                        <DataTrigger TargetType="Entry"
+							         Binding="{Binding Password.IsValid}"
+							         Value="False">
+                            <Setter Property="PlaceholderColor" Value="{StaticResource RedColor}" />
+                        </DataTrigger>
+                    </Entry.Triggers>
+                </Entry>
+                <Label Text="{Binding Password.Errors, Converter={StaticResource ListToStringConverter}}"
+				       TextColor="{StaticResource RedColor}"
+                       FontSize="10"/>
+                <Button Text="{x:Static r:Resource.login}" Margin="0,15"
+                        HorizontalOptions="Center"
+                        IsVisible="{Binding IsBusy, Converter={StaticResource NegateBooleanConverter}}"
+                        Command="{Binding LoginCommand}"/>
+                <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="True" Margin="0,15" />
+                <Label Text="{Binding LoginRequest.Errors, Converter={StaticResource ListToStringConverter}}"
+				       TextColor="{StaticResource RedColor}"
+                       HorizontalOptions="Center"
+                       FontSize="10"/>
+            </StackLayout>
+        </Frame>
+    </ContentPage.Content>
+</ContentPage>

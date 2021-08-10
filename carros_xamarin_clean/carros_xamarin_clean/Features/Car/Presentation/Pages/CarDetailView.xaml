@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="carros_xamarin_clean.Features.Car.Presentation.Pages.CarDetailView"
+             xmlns:rox="clr-namespace:Rox;assembly=Rox.Xamarin.Video.Portable"
+             Title="{Binding Car.Nome}"
+             BackgroundColor="{StaticResource navigationBarColor}">
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout Spacing="15" Margin="15,0">
+                <Image Source="{Binding Car.UrlFoto}" WidthRequest="200" HeightRequest="200" />
+                <Label Text="{Binding Car.Tipo}" TextColor="{StaticResource whiteColor}"
+                       HorizontalOptions="FillAndExpand" TextTransform="Uppercase" 
+                       HorizontalTextAlignment="Center"/>
+                <Label Text="{Binding Car.Descricao}" TextColor="{StaticResource whiteColor}"
+                       HorizontalOptions="FillAndExpand"/>
+                <rox:VideoView VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"
+                               Source="{Binding Car.UrlVideo}" AutoPlay="True" LoopPlay="True" ShowController="True"/>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>
