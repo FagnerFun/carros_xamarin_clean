@@ -9,7 +9,7 @@
                Margin="25,0"
                CornerRadius="5" HasShadow="True" >
             <StackLayout>
-                <Entry Placeholder="{x:Static r:Resource.user}" Text="{Binding Username.Value, Mode=TwoWay}">
+                <Entry AutomationId="UserEntry" Placeholder="{x:Static r:Resource.user}" Text="{Binding Username.Value, Mode=TwoWay}">
                     <Entry.Triggers>
                         <DataTrigger TargetType="Entry"
 							         Binding="{Binding Username.IsValid}"
@@ -21,7 +21,7 @@
                 <Label Text="{Binding Username.Errors, Converter={StaticResource ListToStringConverter}}"
 				       TextColor="{StaticResource RedColor}"
                        FontSize="10"/>
-                <Entry IsPassword="True" Placeholder="{x:Static r:Resource.password}" Text="{Binding Password.Value, Mode=TwoWay}">
+                <Entry AutomationId="PasswordEntry" IsPassword="True" Placeholder="{x:Static r:Resource.password}" Text="{Binding Password.Value, Mode=TwoWay}">
                     <Entry.Triggers>
                         <DataTrigger TargetType="Entry"
 							         Binding="{Binding Password.IsValid}"
@@ -35,10 +35,12 @@
                        FontSize="10"/>
                 <Button Text="{x:Static r:Resource.login}" Margin="0,15"
                         HorizontalOptions="Center"
+                        AutomationId="LoginButton"
                         IsVisible="{Binding IsBusy, Converter={StaticResource NegateBooleanConverter}}"
                         Command="{Binding LoginCommand}"/>
                 <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="True" Margin="0,15" />
-                <Label Text="{Binding LoginRequest.Errors, Converter={StaticResource ListToStringConverter}}"
+                <Label AutomationId="ErrorLabel" 
+                       Text="{Binding LoginRequest.Errors, Converter={StaticResource ListToStringConverter}}"
 				       TextColor="{StaticResource RedColor}"
                        HorizontalOptions="Center"
                        FontSize="10"/>
