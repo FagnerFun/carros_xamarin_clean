@@ -33,7 +33,7 @@ steps:
   inputs:
     command: 'restore'
     projects: '**\*.sln'
-    feedsToUse: 'select''
+    feedsToUse: 'select'
 
 - task: XamarinAndroid@1
   displayName: 'Build Xamarin.Android'
