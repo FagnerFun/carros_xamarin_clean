@@ -17,6 +17,7 @@ pool:
 variables:
   BuildConfiguration: 'Release'
 
+
 steps:
 - task: NuGetToolInstaller@0
   displayName: 'Use NuGet 5.x'
@@ -27,6 +28,10 @@ steps:
   displayName: 'NuGet restore'
   inputs:
     restoreSolution: '$(Parameters.restorePkgSolution)'
+
+- task: VSBuild@1
+  displayName: 'Build solution **\*.sln'
+  enabled: false
 
 - task: XamarinAndroid@1
   displayName: 'Build Xamarin.Android'
@@ -40,10 +45,6 @@ steps:
   inputs:
     command: test
     projects: 'carros_xamarin_clean/carros_xamarin_clean.Test/carros_xamarin_clean.Test.csproj'
-
-- task: VSTest@2
-  displayName: 'VsTest - testAssemblies'
-  enabled: false
 
 - task: AndroidSigning@3
   displayName: 'Signing and aligning'
