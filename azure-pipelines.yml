@@ -41,6 +41,7 @@ steps:
     projectFile: 'carros_xamarin_clean/carros_xamarin_clean.Android/carros_xamarin_clean.Android.csproj'
     outputDirectory: '$(build.binariesdirectory)/$(BuildConfiguration)/AndroidOutput'
     configuration: '$(BuildConfiguration)'
+    jdkOption: 'JDKVersion'
 
 - task: DotNetCoreCLI@2
   displayName: 'dotnet test'
