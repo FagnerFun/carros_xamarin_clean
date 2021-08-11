@@ -69,3 +69,18 @@ steps:
     PathtoPublish: '$(build.binariesdirectory)/$(BuildConfiguration)/AndroidOutput'
     ArtifactName: 'android-artifact'
   condition: succeededOrFailed()
+
+- task: MSBuild@1
+  displayName: 'Build UITest'
+  inputs:
+    solution: 'carros_xamarin_clean/carros_xamarin_clean.UITest/carros_xamarin_clean.UITest.csproj'
+    msbuildArchitecture: x64
+    configuration: '$(BuildConfiguration)'
+    msbuildArguments: '/p:OutputPath=$(build.binariesdirectory)/uitests'
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: uitest-artifact'
+  inputs:
+    PathtoPublish: '$(build.binariesdirectory)/uitests'
+    ArtifactName: 'uitest-artifact'
+  condition: succeededOrFailed()
