@@ -35,6 +35,12 @@ steps:
     outputDirectory: '$(build.binariesdirectory)/$(BuildConfiguration)/AndroidOutput'
     configuration: '$(BuildConfiguration)'
 
+- task: DotNetCoreCLI@2
+  displayName: 'dotnet test'
+  inputs:
+    command: test
+    projects: 'carros_xamarin_clean/carros_xamarin_clean.Test/carros_xamarin_clean.Test.csproj'
+
 - task: VSTest@2
   displayName: 'VsTest - testAssemblies'
   enabled: false
