@@ -18,9 +18,9 @@ variables:
 
 steps:
 - task: NuGetToolInstaller@0
-  displayName: 'Use NuGet 4.4.1'
+  displayName: 'Use NuGet 5.x'
   inputs:
-    versionSpec: 4.4.1
+    versionSpec: 5.x
 
 - task: NuGetCommand@2
   displayName: 'NuGet restore'
@@ -28,31 +28,29 @@ steps:
     restoreSolution: '$(Parameters.restorePkgSolution)'
 
 - task: XamarinAndroid@1
-  displayName: 'Build Xamarin.Android project'
+  displayName: 'Build Xamarin.Android'
   inputs:
-    projectFile: src/carros_xamarin_clean/carros_xamarin_clean.Android/carros_xamarin_clean.Android.csproj
-    outputDirectory: '$(build.binariesdirectory)/$(BuildConfiguration)'
+    projectFile: 'carros_xamarin_clean/carros_xamarin_clean.Android/carros_xamarin_clean.Android.csproj'
+    outputDirectory: '$(build.binariesdirectory)/$(BuildConfiguration)/AndroidOutput'
     configuration: '$(BuildConfiguration)'
 
+- task: VSTest@2
+  displayName: 'VsTest - testAssemblies'
+  enabled: false
+
 - task: AndroidSigning@3
-  displayName: 'Signing and aligning APK file(s) $(build.binariesdirectory)/$(BuildConfiguration)/*.apk'
+  displayName: 'Signing and aligning'
   inputs:
-    apkFiles: '$(Parameters.appFiles)'
-    apksignerKeystoreFile: '2677b3af-f331-4e69-9f82-b435ef95f437'
-    apksignerKeystorePassword: '$(keystore_password)'
-    apksignerKeystoreAlias: carrosxamarin
-    apksignerKeyPassword: '$(keystore_password)'
+    apkFiles: '$(build.binariesdirectory)/$(BuildConfiguration)/AndroidOutput/*.apk'
+    apksignerKeystoreFile: '1a14c806-297b-4ed6-a475-bb2a4c5a6610'
+    apksignerKeystorePassword: '$(key_password)'
+    apksignerKeystoreAlias: CarrosSample
+    apksignerKeyPassword: '$(key_password)'
+    apksignerArguments: '--verbose  --min-sdk-version 21'
 
 - task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifact: carrosxamarin-android'
+  displayName: 'Publish Artifact: android-artifact'
   inputs:
-    PathtoPublish: '$(build.binariesdirectory)/$(BuildConfiguration)'
-    ArtifactName: 'carrosxamarin-android'
+    PathtoPublish: '$(build.binariesdirectory)/$(BuildConfiguration)/AndroidOutput'
+    ArtifactName: 'android-artifact'
   condition: succeededOrFailed()
-
-
-
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
