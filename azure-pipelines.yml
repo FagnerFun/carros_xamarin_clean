@@ -31,6 +31,14 @@ steps:
     feedsToUse: select
     includeNuGetOrg: true
 
+- task: VSBuild@1
+  displayName: 'Restore Packages'
+  inputs:
+    solution: '**/*.sln'
+    configuration: '$(buildConfiguration)'
+    vsVersion: '16.0'
+    msbuildArgs: '/t:Restore'
+
 - task: XamarinAndroid@1
   displayName: 'Build Xamarin.Android'
   inputs:
