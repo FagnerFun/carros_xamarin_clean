@@ -29,9 +29,11 @@ steps:
   inputs:
     restoreSolution: '$(Parameters.restorePkgSolution)'
 
-- task: VSBuild@1
-  displayName: 'Build solution **\*.sln'
-  enabled: false
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'restore'
+    projects: '**\*.sln'
+    feedsToUse: 'select''
 
 - task: XamarinAndroid@1
   displayName: 'Build Xamarin.Android'
