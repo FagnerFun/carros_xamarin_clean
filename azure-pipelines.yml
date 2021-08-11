@@ -28,12 +28,8 @@ steps:
   displayName: 'NuGet restore'
   inputs:
     restoreSolution: '$(Parameters.restorePkgSolution)'
-
-- task: DotNetCoreCLI@2
-  inputs:
-    command: 'restore'
-    projects: '**\*.sln'
-    feedsToUse: 'select'
+    feedsToUse: select
+    includeNuGetOrg: true
 
 - task: XamarinAndroid@1
   displayName: 'Build Xamarin.Android'
