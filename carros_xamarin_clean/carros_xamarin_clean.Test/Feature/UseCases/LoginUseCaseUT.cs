@@ -16,8 +16,8 @@ namespace carros_xamarin_clean.Test.Feature.UseCases
 {
     public class LoginUseCaseUT
     {
-        Mock<ILoginClient> loginClientMock = new Mock<ILoginClient>();
-        Mock<IUserRepository> userRepositoryMock = new Mock<IUserRepository>();
+        readonly Mock<ILoginClient> loginClientMock = new();
+        readonly Mock<IUserRepository> userRepositoryMock = new();
 
         private LoginUseCase useCase;
 

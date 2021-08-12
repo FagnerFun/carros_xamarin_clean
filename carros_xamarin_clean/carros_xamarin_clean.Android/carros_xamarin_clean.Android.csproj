@@ -57,6 +57,12 @@
     <EmbedAssembliesIntoApk>true</EmbedAssembliesIntoApk>
     <AndroidSupportedAbis>
     </AndroidSupportedAbis>
+    <AndroidKeyStore>true</AndroidKeyStore>
+    <AndroidSigningKeyStore>Key/CarrosSample.keystore</AndroidSigningKeyStore>
+    <AndroidSigningStorePass>Senha@1234</AndroidSigningStorePass>
+    <AndroidSigningKeyPass>Senha@1234</AndroidSigningKeyPass>
+    <AndroidSigningKeyAlias>CarrosSample</AndroidSigningKeyAlias>
+    <AndroidApkSignerAdditionalArguments>--min-sdk-version 25</AndroidApkSignerAdditionalArguments>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Mono.Android" />
@@ -71,8 +77,8 @@
     <PackageReference Include="Prism.DryIoc.Forms">
       <Version>8.1.97</Version>
     </PackageReference>
-    <PackageReference Include="Xamarin.Forms" Version="5.0.0.2012" />
-    <PackageReference Include="Xamarin.Essentials" Version="1.6.1" />
+    <PackageReference Include="Xamarin.Forms" Version="5.0.0.2083" />
+    <PackageReference Include="Xamarin.Essentials" Version="1.7.0" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Initializer\AndroidPlatformInitializer.cs" />
@@ -82,6 +88,9 @@
     <Compile Include="Util\DataBaseAccessService.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Key\CarrosSample.keystore">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Resources\AboutResources.txt" />
     <None Include="Assets\AboutAssets.txt" />
     <None Include="Properties\AndroidManifest.xml" />
