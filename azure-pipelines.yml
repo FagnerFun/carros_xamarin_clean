@@ -7,6 +7,7 @@ trigger:
 - main
 
 pool:
+  vmImage: windows-2019
   name: Azure Pipelines
   demands:
   - MSBuild
@@ -16,43 +17,70 @@ pool:
 variables:
   BuildConfiguration: 'Release'
 
+
 steps:
 - task: NuGetToolInstaller@0
-  displayName: 'Use NuGet 4.4.1'
+  displayName: 'Use NuGet 5.x'
   inputs:
-    versionSpec: 4.4.1
+    versionSpec: 5.x
 
 - task: NuGetCommand@2
   displayName: 'NuGet restore'
   inputs:
     restoreSolution: '$(Parameters.restorePkgSolution)'
+    feedsToUse: select
+    includeNuGetOrg: true
+
+- task: VSBuild@1
+  displayName: 'Restore Packages'
+  inputs:
+    solution: '**/*.sln'
+    configuration: '$(buildConfiguration)'
+    vsVersion: '16.0'
+    msbuildArgs: '/t:Restore'
 
 - task: XamarinAndroid@1
-  displayName: 'Build Xamarin.Android project'
+  displayName: 'Build Xamarin.Android'
   inputs:
-    projectFile: src/carros_xamarin_clean/carros_xamarin_clean.Android/carros_xamarin_clean.Android.csproj
-    outputDirectory: '$(build.binariesdirectory)/$(BuildConfiguration)'
+    projectFile: 'carros_xamarin_clean/carros_xamarin_clean.Android/carros_xamarin_clean.Android.csproj'
+    outputDirectory: '$(build.binariesdirectory)/$(BuildConfiguration)/AndroidOutput'
     configuration: '$(BuildConfiguration)'
+    jdkOption: 'JDKVersion'
+
+- task: DotNetCoreCLI@2
+  displayName: 'dotnet test'
+  inputs:
+    command: test
+    projects: 'carros_xamarin_clean/carros_xamarin_clean.Test/carros_xamarin_clean.Test.csproj'
 
 - task: AndroidSigning@3
-  displayName: 'Signing and aligning APK file(s) $(build.binariesdirectory)/$(BuildConfiguration)/*.apk'
+  displayName: 'Signing and aligning'
   inputs:
-    apkFiles: '$(Parameters.appFiles)'
-    apksignerKeystoreFile: '2677b3af-f331-4e69-9f82-b435ef95f437'
-    apksignerKeystorePassword: '$(keystore_password)'
-    apksignerKeystoreAlias: carrosxamarin
-    apksignerKeyPassword: '$(keystore_password)'
+    apkFiles: '$(build.binariesdirectory)/$(BuildConfiguration)/AndroidOutput/*.apk'
+    apksignerKeystoreFile: '1a14c806-297b-4ed6-a475-bb2a4c5a6610'
+    apksignerKeystorePassword: '$(key_password)'
+    apksignerKeystoreAlias: CarrosSample
+    apksignerKeyPassword: '$(key_password)'
+    apksignerArguments: '--verbose  --min-sdk-version 21'
 
 - task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifact: carrosxamarin-android'
+  displayName: 'Publish Artifact: android-artifact'
   inputs:
-    PathtoPublish: '$(build.binariesdirectory)/$(BuildConfiguration)'
-    ArtifactName: 'carrosxamarin-android'
+    PathtoPublish: '$(build.binariesdirectory)/$(BuildConfiguration)/AndroidOutput'
+    ArtifactName: 'android-artifact'
   condition: succeededOrFailed()
 
+- task: MSBuild@1
+  displayName: 'Build UITest'
+  inputs:
+    solution: 'carros_xamarin_clean/carros_xamarin_clean.UITest/carros_xamarin_clean.UITest.csproj'
+    msbuildArchitecture: x64
+    configuration: '$(BuildConfiguration)'
+    msbuildArguments: '/p:OutputPath=$(build.binariesdirectory)/uitests'
 
-
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: uitest-artifact'
+  inputs:
+    PathtoPublish: '$(build.binariesdirectory)/uitests'
+    ArtifactName: 'uitest-artifact'
+  condition: succeededOrFailed()
