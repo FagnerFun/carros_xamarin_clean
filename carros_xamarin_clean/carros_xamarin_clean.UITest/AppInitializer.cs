@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using Xamarin.UITest;
 using Xamarin.UITest.Queries;
 
@@ -13,6 +14,7 @@ namespace carros_xamarin_clean.UITest
                 return ConfigureApp
                     .Android
                     .InstalledApp("com.fagnerfun.carrosclean")
+                    .PreferIdeSettings()
                     .EnableLocalScreenshots()
                     .StartApp();
             }

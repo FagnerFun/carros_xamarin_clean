@@ -56,7 +56,7 @@ namespace carros_xamarin_clean.UITest
             app.EnterText(PasswordEntry, "123");
             app.Tap(LoginButton);
 
-            results.AddRange(app.WaitForElement(CarSreen, "Não foi possivel navegar para carros"));
+            results.AddRange(app.WaitForElement(CarSreen, "Não foi possivel navegar para carros", TimeSpan.FromMinutes(1)));
             app.Screenshot("Cars.");
 
             Assert.IsTrue(results.Any());
