@@ -48,12 +48,11 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Features\Login\LoginRequirementsSteps.cs" />
     <Compile Include="AppInitializer.cs" />
+    <Compile Include="LoginUI.cs" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
-    <None Include="Features\Login\LoginRequirements.feature" />
+    <Folder Include="Features\Login\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Update="Features\Login\LoginRequirements.feature.cs">
