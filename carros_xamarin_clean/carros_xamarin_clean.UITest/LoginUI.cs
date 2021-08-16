@@ -60,6 +60,6 @@ namespace carros_xamarin_clean.UITest
             app.Screenshot("Cars.");
 
             Assert.IsTrue(results.Any());
-        }
+        })
     }
 }
